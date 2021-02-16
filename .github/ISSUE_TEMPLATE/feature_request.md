@@ -17,5 +17,10 @@ A clear and concise description of how the test content is supposed to look like
 * The duration of all periods is between 10-20 seconds
 * All periods contain a single video and a single audio AdaptationSet.
 
+**Relation to CTA WAVE Test Vector database**
+* http://dash.akamaized.net/WAVE/vectors/
+* What vectors are used from CTA WAVE Test Vector database?
+* Do new vectors have to be created? If so, please add link to issue here https://github.com/cta-wave/Test-Content-Generation/issues
+
 **Additional context**
 Any other information you want to add here.
