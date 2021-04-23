@@ -35,7 +35,7 @@ gpac -graph \
 && code $TID/$MPD && ls -l $TID
 
 export TID=ad-insertion-testcase1/$BATCH/counter/b
-export AD_BASEURL=https://dash.akamaized.net/dashif/$TID/$MPD
+export AD_BASEURL=https://dash.akamaized.net/dashif/$TID/
 rm -rf $TID && \
 gpac -graph \
   -i avgen:dur=30:sr=48000:ch=2:#ClampDur=9.6:#PStart=0.0:#m=m1 \
