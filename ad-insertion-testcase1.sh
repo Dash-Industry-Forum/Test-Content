@@ -3,7 +3,7 @@ set -eux
 # tested with GPAC version 1.1.0-DEV-rev943-g2ad1a5ec-master-x64.exe
 # TODO: add period id to all periods (reported for case 1/2.b)
 
-export BATCH=batch4
+export BATCH=batch5
 
 export GPAC="gpac"
 # -threads=-1"
@@ -27,7 +27,7 @@ export MPD=ad-insertion-testcase1.mpd
 #    -> gpac -graph -i avgen:dur=10:fps=24 @ ffavf::f=fps=fps=25 @ enc:c=avc:fintra=1.920 @ -o tmp/tmp.mpd:stl
 #    -> @ ffavf::f=fps=fps=25
 # - Counter a: the content is invalid because the first period media is longer than 9.6s
-# - Real content: MAIN_CONTENT audio entries are not ok with some value of xs: (may be related to previous)
+# - Real content: MAIN_CONTENT audio entries are not ok with some value of xs: (may be related to previous). Operate on raw.
 export TID=ad-insertion-testcase1/$BATCH/counter/a
 export AD_BASEURL=https://dash.akamaized.net/dashif/$TID/
 rm -rf $TID && \
@@ -85,15 +85,19 @@ export TID=ad-insertion-testcase1/$BATCH/real/a
 export AD_BASEURL=https://dash.akamaized.net/dashif/$TID/
 rm -rf $TID && \
 export CMD="$GPAC \
-  -i $MAIN_CONTENT:FID=GEN1 \
-    resample:osr=48k:SID=GEN1 @ enc:c=aac:FID=GEN1A \
-    ffsws:osize=960x426:SID=GEN1 @ enc:c=avc:fintra=1.920:FID=GEN1V \
-    reframer:#ClampDur=9.6:FID=RF1:SID=GEN1A,GEN1V:xs=19.6,29.2::props=#PStart=0:#m=m1,#PStart=19.2:#m=m3 \
-  -i $AD_CONTENT:FID=GEN2 \
-    resample:osr=48k:SID=GEN2 @ enc:c=aac:FID=GEN2A \
-    ffsws:osize=960x426:SID=GEN2 @ enc:c=avc:fintra=1.920:FID=GEN2V \
-    reframer:#ClampDur=9.6:FID=RF2:SID=GEN2A,GEN2V:xs=19.6:#PStart=9.6:#m=m2:#BUrl=$AD_BASEURL \
-  -o $TID/$MPD:segdur=1.920:stl:cmaf=cmf2:SID=RF1,RF2 --template=\$m\$_\$Type\$_\$Number\$"
+  -i $MAIN_CONTENT \
+    @ resample:osr=48k \
+    @1 ffsws:osize=960x426 \
+    @ @1 reframer:#ClampDur=9.6:xs=19.6,29.2::props=#PStart=0:#m=m1,#PStart=19.2:#m=m3 \
+    @ enc:c=aac:FID=GEN1A \
+    @1 enc:c=avc:fintra=1.920:FID=GEN1V \
+  -i $AD_CONTENT \
+    @ resample:osr=48k \
+    @1 ffsws:osize=960x426 \
+    @ @1 reframer:#ClampDur=9.6:xs=19.6:#PStart=9.6:#m=m2:#BUrl=$AD_BASEURL \
+    @ enc:c=aac:FID=GEN2A \
+    @1 enc:c=avc:fintra=1.920:FID=GEN2V \
+  -o $TID/$MPD:segdur=1.920:stl:cmaf=cmf2:SID=GEN1A,GEN1V,GEN2A,GEN2V --template=\$m\$_\$Type\$_\$Number\$"
 echo $CMD
 $CMD && code $TID/$MPD && ls -l $TID
 
@@ -101,18 +105,24 @@ export TID=ad-insertion-testcase1/$BATCH/real/b
 export AD_BASEURL=https://dash.akamaized.net/dashif/$TID/
 rm -rf $TID && \
 export CMD="$GPAC \
-  -i $MAIN_CONTENT:FID=GEN1:#ClampDur=9.6:#PStart=0.0:#m=m1 \
-    resample:osr=48k:SID=GEN1 @ enc:c=aac:FID=GEN1A \
-    ffsws:osize=960x426:SID=GEN1 @ enc:c=avc:fintra=1.920:FID=GEN1V \
-    reframer:xs=19.6:FID=RF1:SID=GEN1A,GEN1V \
-  -i $AD_CONTENT:FID=GEN2:#ClampDur=9.6:#PStart=9.6:#m=m2:#BUrl=$AD_BASEURL \
-    resample:osr=48k:SID=GEN2 @ enc:c=aac:FID=GEN2A \
-    ffsws:osize=960x426:SID=GEN2 @ enc:c=avc:fintra=1.920:FID=GEN2V \
-    reframer:xs=10.0:FID=RF2:SID=GEN2A,GEN2V \
-  -i $MAIN_CONTENT:FID=GEN3:#ClampDur=9.6:#PStart=19.2:#m=m3 \
-    resample:osr=48k:SID=GEN3 @ enc:c=aac:FID=GEN3A \
-    ffsws:osize=960x426:SID=GEN3 @ enc:c=avc:fintra=1.920:FID=GEN3V \
-    reframer:xs=29.2:FID=RF3:SID=GEN3A,GEN3V \
--o $TID/$MPD:segdur=1.920:stl:cmaf=cmf2:SID=RF1,RF2,RF3 --template=\$m\$_\$Type\$_\$Number\$"
+  -i $MAIN_CONTENT:#ClampDur=9.6:#PStart=0.0:#m=m1 \
+    @ resample:osr=48k \
+    @1 ffsws:osize=960x426 \
+    @ @1 reframer:xs=19.6 \
+    @ enc:c=aac:FID=GEN1A \
+    @1 enc:c=avc:fintra=1.920:FID=GEN1V \
+  -i $AD_CONTENT:#ClampDur=9.6:#PStart=9.6:#m=m2:#BUrl=$AD_BASEURL \
+    @resample:osr=48k \
+    @1 ffsws:osize=960x426 \
+    @ @1 reframer:xs=10.0 \
+    @ enc:c=aac:FID=GEN2A \
+    @1 enc:c=avc:fintra=1.920:FID=GEN2V \
+  -i $MAIN_CONTENT:#ClampDur=9.6:#PStart=19.2:#m=m3 \
+    @ resample:osr=48k \
+    @1 ffsws:osize=960x426 \
+    @ @1 reframer:xs=29.2 \
+    @ enc:c=aac:FID=GEN3A \
+    @1 enc:c=avc:fintra=1.920:FID=GEN3V
+-o $TID/$MPD:segdur=1.920:stl:cmaf=cmf2:SID=GEN1A,GEN1V,GEN2A,GEN2V,GEN3A,GEN3V --template=\$m\$_\$Type\$_\$Number\$"
 echo $CMD
 $CMD && code $TID/$MPD && ls -l $TID
