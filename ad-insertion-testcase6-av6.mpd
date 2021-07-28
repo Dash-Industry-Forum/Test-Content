@@ -9,8 +9,7 @@
   <AdaptationSet id="1" segmentAlignment="true" lang="und" startWithSAP="1">
    <SegmentTemplate media="audio_$Number$.m4s" initialization="audio_init.mp4" timescale="48000" pdDelta="-95296" startNumber="1">
     <SegmentTimeline>
-     <S t="0" d="143936"/>
-     <S d="143360"/>
+     <S t="0" d="144384" r="1"/>
     </SegmentTimeline>
    </SegmentTemplate>
    <Representation id="a1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" bandwidth="128000">
@@ -29,16 +28,15 @@
   </AdaptationSet>
  </Period>
 
- <Period id="P2" start="PT0H0M8.000S" duration="PT0H0M16.000S">
+ <Period id="P2" start="PT0H0M4.000S" duration="PT0H0M16.000S">
   <AdaptationSet id="1" segmentAlignment="true" lang="und" startWithSAP="1">
    <SupplementalProperty schemeIdUri="urn:mpeg:dash:period-continuity:2015" value="P1"/>
-   <SegmentTemplate media="audio_$Number$.m4s" initialization="audio_init.mp4" timescale="48000" presentationTimeOffset="287296" eptDelta="96704" pdDelta="-96704" startNumber="3">
+   <SegmentTemplate media="audio_$Number$.m4s" initialization="audio_init.mp4" timescale="48000" presentationTimeOffset="288768" eptDelta="95232" pdDelta="-95232" startNumber="3">
     <SegmentTimeline>
-     <S t="287296" d="144384"/>
-     <S d="143360"/>
+     <S t="288768" d="143360"/>
      <S d="144384" r="1"/>
      <S d="143360"/>
-     <S d="144384"/>
+     <S d="144384" r="1"/>
     </SegmentTimeline>
    </SegmentTemplate>
    <Representation id="a1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" bandwidth="128000">

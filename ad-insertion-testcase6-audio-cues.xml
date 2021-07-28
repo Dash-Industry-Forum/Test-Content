@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DASHCues xmlns="urn:gpac:dash:schema:cues:2018">
 <Stream id="1" timescale="48000">
-<!-- for i in {1..8} ; do echo "<Cue cts=\"$(((24000+$i*144000)/1024*1024))\"/>" ; done -->
-<Cue cts="167936"/>
-<Cue cts="311296"/>
-<Cue cts="455680"/>
-<Cue cts="599040"/>
-<Cue cts="743424"/>
-<Cue cts="887808"/>
-<Cue cts="1031168"/>
-<Cue cts="1175552"/>
+<!-- for i in {1..8} ; do echo "<Cue cts=\"$(((24000+1024+$i*144000)/1024*1024))\"/>" ; done -->
+<Cue cts="168960"/>
+<Cue cts="312320"/>
+<Cue cts="456704"/>
+<Cue cts="600064"/>
+<Cue cts="744448"/>
+<Cue cts="888832"/>
+<Cue cts="1032192"/>
+<Cue cts="1176576"/>
 </Stream>
 </DASHCues>
