@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eux
-# tested with GPAC version 1.1.0-DEV-rev998-g206ad0907-master
+# tested with GPAC version 1.1.0-DEV-rev1153-g4ad9b4f20-master
 
 export BATCH=batch3
 
