@@ -31,7 +31,7 @@
  <Period id="P2" start="PT0H0M4.000S" duration="PT0H0M18.000S">
   <AdaptationSet id="1" segmentAlignment="true" lang="und" startWithSAP="1">
    <SupplementalProperty schemeIdUri="urn:mpeg:dash:period-continuity:2015" value="P1"/>
-   <SegmentTemplate media="audio_$Number$.m4s" initialization="audio_init.mp4" timescale="48000" presentationTimeOffset="288768" eptDelta="-768" startNumber="3">
+   <SegmentTemplate media="audio_$Number$.m4s" initialization="audio_init.mp4" timescale="48000" presentationTimeOffset="288000" eptDelta="768" pdDelta="1024" startNumber="3">
     <SegmentTimeline>
      <S t="288768" d="144384"/>
      <S d="143360"/>
